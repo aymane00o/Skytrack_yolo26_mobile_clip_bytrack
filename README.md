@@ -39,16 +39,38 @@ budget. So the detector is given a 640 px square (`--yolo-imgsz`) instead of 128
 while frames are still worked on at 1080 px tall (`--work-height`) and output and
 telemetry stay in the video's own coordinates.
 
-Shrinking the frames as well is the obvious next step, and it does not work: at
-720 px the drone clip held its target on a quarter of the frames instead of
-almost all of them. The table below measures all three.
+Shrinking the frames as well is the obvious next step, and it does not work: a
+climbing aircraft is a handful of pixels, and half-size frames lose it.
+
+| clip | settings | speed | frames held | re-locks |
+| --- | --- | --- | --- | --- |
+| micro talon | **mobile** — frames 1080 px, detector 640 px | **4.7 fps** | 281/300 (94%) | 1 |
+| micro talon | small — frames 720 px, detector 640 px | 5.8 fps | 136/300 (45%) | 1 |
+| micro talon | full — frames 1080 px, detector 1280 px | 1.6 fps | 281/300 (94%) | 1 |
+| car test | **mobile** | **6.2 fps** | 254/300 (85%) | 1 |
+| car test | small | 5.7 fps | 254/300 (85%) | 1 |
+| car test | full | 1.9 fps | 261/300 (87%) | 2 |
+
+So the shipped settings are 3x faster than the detector at full size and hold the
+target on the same frames. Shrinking the frames on top of that buys almost
+nothing on either clip and costs the drone half its frames.
 
 Measured with `bench_mobile.py` on the two clips below, headless, one run at a
 time so the timings do not share the CPU. `held` counts frames with a box on
 something; whether that box is on the right object is a separate question,
-answered by eye from the contact sheets the benchmark writes.
+answered by eye from the contact sheets the benchmark writes
+([drone](docs/talon_settings.jpg), [car](docs/car_settings.jpg)), a row per
+setting over the same frames.
 
-_The measured table lands in the commit that follows this one._
+On the drone clip, mobile and full settings sit on the aircraft from the climb
+onwards and agree frame for frame; the 720 px run has no box on it at all after
+takeoff. Both keep the box for a moment on the mat the aircraft lifted off from
+before finding it again in the air. On the car clip all three follow the same
+car through the traffic, and all three let go rather than guess when it goes out
+of sight behind the interchange.
+
+Reproduce with `python bench_mobile.py --frames 300`, or point `CLIPS` in that
+file at your own footage.
 
 
 
