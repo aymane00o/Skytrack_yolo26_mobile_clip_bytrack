@@ -84,7 +84,21 @@ files you can substitute:
 
 ## The two test runs
 
-Each run drawn from its own telemetry: the path the target's centre took, a box
+The real footage, playing inside an SVG, with the box the run put on the target:
+
+<p align="center">
+  <img src="docs/talon_clip.svg" alt="The drone tracked from takeoff into the sky" width="30%">
+  <img src="docs/car_clip.svg" alt="The SUV tracked through traffic" width="60%">
+</p>
+
+Made from the video and the run's own telemetry - frames sampled, the box drawn
+on, embedded as JPEGs and played on a loop by the SVG itself:
+
+```bash
+python make_clip_svg.py car_test.mp4 runs/fig_car.csv docs/car_clip.svg --start 300 --end 590 --step 5 --width 420
+```
+
+And the same two runs as a drawing: the path the target's centre took, a box
 along it every so often, and a timeline of the whole run underneath - green where
 the target was held, orange where it was searching.
 
@@ -102,11 +116,8 @@ the target was held, orange where it was searching.
   locking onto a look-alike, which is what the rest of the timeline shows. This is
   the point where you press **R**.
 
-Both are made with `make_figures.py`, from the `--csv` any run writes:
-
-```bash
-python make_figures.py runs/fig_car.csv docs/car_run.svg --title "car test" --video car_test.mp4 --frames 900
-```
+The drawings come from `make_figures.py`, the clips from `make_clip_svg.py`; both
+take the `--csv` any run writes.
 
 ## Install
 
@@ -161,6 +172,7 @@ tracker.py       the plain per-track bookkeeping the loop keeps
 overlay.py       brackets, labels, trail, arrow, inset
 bench_mobile.py  the measurements in this README
 make_figures.py  a run's telemetry drawn as an SVG
+make_clip_svg.py real frames of a run, animated, as an SVG
 ```
 
 This is a single-target pipeline lifted out of a larger tracker, keeping only
