@@ -82,6 +82,32 @@ files you can substitute:
 * **car test** — a police helicopter chase, 640×360: a silver SUV in heavy
   traffic, with a camera cut at frame 1044 to a wide shot.
 
+## The two test runs
+
+Each run drawn from its own telemetry: the path the target's centre took, a box
+along it every so often, and a timeline of the whole run underneath - green where
+the target was held, orange where it was searching.
+
+<p align="center">
+  <img src="docs/talon_run.svg" alt="The drone's path from the mat up into the sky" width="42%">
+  <img src="docs/car_run.svg" alt="The SUV's path through the interchange" width="55%">
+</p>
+
+* **micro talon** — 881 of 900 frames held. The path runs from the mat at the
+  bottom of the frame, up and out as the aircraft climbs away; the orange band is
+  the takeoff, where the box stays a moment on the mat before finding the aircraft
+  in the air.
+* **car test** — 291 of 900 held. The SUV is followed through the traffic until it
+  goes out of sight at the interchange; from there the run searches rather than
+  locking onto a look-alike, which is what the rest of the timeline shows. This is
+  the point where you press **R**.
+
+Both are made with `make_figures.py`, from the `--csv` any run writes:
+
+```bash
+python make_figures.py runs/fig_car.csv docs/car_run.svg --title "car test" --video car_test.mp4 --frames 900
+```
+
 ## Install
 
 ```bash
@@ -134,6 +160,7 @@ detector.py      YOLO26 and the contrast detector, scored for ByteTrack
 tracker.py       the plain per-track bookkeeping the loop keeps
 overlay.py       brackets, labels, trail, arrow, inset
 bench_mobile.py  the measurements in this README
+make_figures.py  a run's telemetry drawn as an SVG
 ```
 
 This is a single-target pipeline lifted out of a larger tracker, keeping only
