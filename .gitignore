@@ -1,0 +1,16 @@
+# Footage and rendered output stay local.
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# Model weights are downloaded on first use.
+*.pt
+*.pth
+
+# Run artefacts
+runs/
+*.csv
+*.log
+__pycache__/
+*.pyc

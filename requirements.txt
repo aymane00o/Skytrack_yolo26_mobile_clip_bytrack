@@ -1,0 +1,9 @@
+opencv-contrib-python>=4.8
+numpy>=1.24
+ultralytics>=8.3
+
+# Note: installing ultralytics pulls in opencv-python, which shadows
+# opencv-contrib-python and removes the CSRT tracker this pipeline follows the
+# target with. Repair it after installing:
+#   pip uninstall -y opencv-python
+#   pip install --force-reinstall --no-deps opencv-contrib-python
